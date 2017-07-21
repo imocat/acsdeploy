@@ -20,8 +20,8 @@ class ACSDeploy:
             projectConfig = self.configs[self.projectName][self.env]
 
             print('''
-project: %s
-env: %s
+集群: %s
+环境: %s
 ''' % (self.projectName, self.env) )
 
             self.agent = ACSAgent(
@@ -83,10 +83,10 @@ env: %s
         deployServices = self.loadYaml(dockerComposePath)
 
         if success == False:
-            print('创建应用 %s:%s' % (appName,version))
+            print('创建应用 %s:%s' % (appName, version))
             return self.createApp(appName, version, updateMethod, dockerComposePath)
         else:
-            print('更新应用 %s:%s' % (appName,version))
+            print('更新应用 %s:%s' % (appName, version))
             return self.updateApp(appName, version, updateMethod, dockerComposePath)
 
     def removeApp(self, appName):
