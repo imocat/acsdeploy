@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from datetime import datetime
+
 import json
 import time
 import yaml
+from datetime import datetime
 from ACSAgent import ACSAgent
+import os
 
 
 class ACSDeploy:
@@ -19,25 +21,42 @@ class ACSDeploy:
         if self.configs.has_key(self.projectName) and self.configs[self.projectName].has_key(self.env):
             projectConfig = self.configs[self.projectName][self.env]
 
+            caFilePath = projectConfig['ca']
+            certFilePath = projectConfig['cert']
+            keyFilePath = projectConfig['key']
+
+            self.checkFileExists(caFilePath)
+            self.checkFileExists(certFilePath)
+            self.checkFileExists(keyFilePath)
+
             print('''
-集群: %s
-环境: %s
+Cluster: %s
+Environment: %s
 ''' % (self.projectName, self.env) )
 
             self.agent = ACSAgent(
                 projectConfig['masterUrl'],
-                ca=projectConfig['ca'],
-                cert=projectConfig['cert'],
-                key=projectConfig['key']
+                ca=caFilePath,
+                cert=certFilePath,
+                key=keyFilePath
             )
+        else:
+            raise Exception('Project or environment not exists: %s, %s' %
+                            (self.projectName, self.env))
+
+    def checkFileExists(self, filePath):
+        if not os.path.exists(filePath):
+            raise Exception('File not exists: %s' % (filePath))
 
     def loadConfig(self, configPath):
+        self.checkFileExists(configPath)
         return json.load(open(configPath, 'r'))
 
     def appName(self, appName):
         return appName.upper()
 
     def loadYaml(self, yamlPath):
+        self.checkFileExists(yamlPath)
         return yaml.load(open(yamlPath, 'r'))
 
     def getApps(self):
@@ -73,20 +92,21 @@ class ACSDeploy:
         '''
         success, app = self.getApp(appName)
 
+        # 自动生成版本号码
         if version == None or version == '':
             dt = datetime.now()
             version = dt.strftime('%Y%m%d_%H%M%S')
 
+        # 默认标准发布方式
         if updateMethod == None or updateMethod == '':
             updateMethod = 'rolling'
 
-        deployServices = self.loadYaml(dockerComposePath)
-
+        # 应用不存在时，创建新应用
         if success == False:
-            print('创建应用 %s:%s' % (appName, version))
+            print('Create %s to version %s' % (appName, version))
             return self.createApp(appName, version, updateMethod, dockerComposePath)
         else:
-            print('更新应用 %s:%s' % (appName, version))
+            print('Update %s to version %s' % (appName, version))
             return self.updateApp(appName, version, updateMethod, dockerComposePath)
 
     def removeApp(self, appName):
