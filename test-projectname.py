@@ -2,17 +2,15 @@
 # encoding: utf-8
 
 from json import dumps
-import acsdeloy
-# from acsdeploy import ACSDeploy
+from acsdeploy import ACSDeploy
 from time import time
 
 if __name__ == '__main__':
     version = str(time())
 
-    # project = ACSDeploy('./config.json', 'projectname', 'test')
-    # print(help(project))
+    project = ACSDeploy('./config.json', 'projectname', 'test')
 
-    # print project.deploy('test-web', version, 'blue-green', './test-web.yml')
+    print project.deploy('test-web', version, 'blue-green', './test-web.yml')
     # print project.stopApp('test-web')
     # print project.startApp('test-web')
     # print project.getServices()
