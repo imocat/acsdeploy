@@ -1,9 +1,10 @@
 #!/usr/bin/env python
+# encoding: utf-8
 
 import requests
 
 
-class APIRequestClient:
+class APIRequest:
 
     def __init__(self, apiUrl, ca=None, cert=None, key=None):
         self.apiUrl = apiUrl
@@ -60,11 +61,3 @@ class APIRequestClient:
         )
 
         return response.status_code == 200, response.content
-
-
-if __name__ == '__main__':
-    api = APIRequestClient('https://api.doupai.cc')
-    print(api.get('/ping'))
-    print(api.post('/ping'))
-    print(api.put('/ping'))
-    print(api.delete('/ping'))

@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# encoding: utf-8
 
 import json
 from ACSAgent import ACSAgent
 
 
-class ACSProject:
+class ACSDeploy:
 
     def __init__(self, configPath, projectName, env):
         self.configs = self.loadConfig(configPath)

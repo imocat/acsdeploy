@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# encoding: utf-8
 
 from json import dumps
-from APIRequestClient import APIRequestClient
+from APIRequest import APIRequest
 
 
-class ACSAgent(APIRequestClient):
+class ACSAgent(APIRequest):
 
     def getContents(self, path):
         f = open(path, 'r')
