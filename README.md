@@ -94,6 +94,7 @@ if __name__ == '__main__':
 #### createApp
 #### updateApp
 #### removeApp
+#### killApp
 #### deployApp
 #### startApp
 #### stopApp

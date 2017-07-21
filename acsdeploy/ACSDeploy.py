@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from datetime import datetime
 import json
+import time
+import yaml
 from ACSAgent import ACSAgent
 
 
@@ -34,6 +37,9 @@ env: %s
     def appName(self, appName):
         return appName.upper()
 
+    def loadYaml(self, yamlPath):
+        return yaml.load(open(yamlPath, 'r'))
+
     def getApps(self):
         '''
         获取当前容器集群应用列表
@@ -65,14 +71,22 @@ env: %s
         '''
         部署服务（创建或更新）
         '''
-        err, app = self.getApp(appName)
+        success, app = self.getApp(appName)
 
-        if not updateMethod:
+        if version == None or version == '':
+            dt = datetime.now()
+            version = dt.strftime('%Y%m%d_%H%M%S')
+
+        if updateMethod == None or updateMethod == '':
             updateMethod = 'rolling'
 
-        if err == False:
+        deployServices = self.loadYaml(dockerComposePath)
+
+        if success == False:
+            print('创建应用 %s:%s' % (appName,version))
             return self.createApp(appName, version, updateMethod, dockerComposePath)
         else:
+            print('更新应用 %s:%s' % (appName,version))
             return self.updateApp(appName, version, updateMethod, dockerComposePath)
 
     def removeApp(self, appName):
@@ -81,6 +95,12 @@ env: %s
         '''
         appName = self.appName(appName)
         return self.agent.removeApp(appName)
+
+    def killApp(self, serviceName):
+        '''
+        删除应用
+        '''
+        return self.agent.killService(serviceName)
 
     def startApp(self, appName):
         '''

@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import requests
+from json import loads
 
 
 class APIRequest:
@@ -22,7 +23,13 @@ class APIRequest:
             cert=self.cert,
         )
 
-        return response.status_code == 200, response.content
+        result = {}
+        try:
+            result = loads(response.content)
+        except:
+            pass
+
+        return response.status_code < 300, result
 
     def post(self, path, data=None):
         url = '%s%s' % (self.apiUrl, path)
@@ -35,7 +42,13 @@ class APIRequest:
             cert=self.cert,
         )
 
-        return response.status_code == 200, response.content
+        result = {}
+        try:
+            result = loads(response.content)
+        except:
+            pass
+
+        return response.status_code < 300, result
 
     def put(self, path, data=None):
         url = '%s%s' % (self.apiUrl, path)
@@ -48,7 +61,13 @@ class APIRequest:
             cert=self.cert,
         )
 
-        return response.status_code == 200, response.content
+        result = {}
+        try:
+            result = loads(response.content)
+        except:
+            pass
+
+        return response.status_code < 300, result
 
     def delete(self, path):
         url = '%s%s' % (self.apiUrl, path)
@@ -60,4 +79,10 @@ class APIRequest:
             cert=self.cert,
         )
 
-        return response.status_code == 200, response.content
+        result = {}
+        try:
+            result = loads(response.content)
+        except:
+            pass
+
+        return response.status_code < 300, result
