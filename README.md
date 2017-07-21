@@ -83,7 +83,7 @@ if __name__ == '__main__':
     # print project.killService('TEST-WEB_test-web')
     # print project.scaleService('TEST-WEB_test-web',2)
 ```
-
+`test-web.yml` 为阿里云部署的 docker-compose.yml 文件，详情请查看阿里云容器服务编排说明文档
 
 # 文档
 
