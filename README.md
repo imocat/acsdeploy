@@ -34,7 +34,7 @@
 
 ```json
 {
-  "doupai": {
+  "projectname": {
     "stage": {
       "cert": "projectname/stage/cert.pem",
       "key": "projectname/stage/key.pem",

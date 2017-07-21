@@ -7,7 +7,7 @@ from time import time
 if __name__ == '__main__':
     version = str(time())
 
-    # project = ACSProject('./config.json', 'doupai', 'test')
+    # project = ACSProject('./config.json', 'projectname', 'test')
     # print(help(project))
 
     # print project.deploy('test-web', version, 'blue-green', './test-web.yml')
