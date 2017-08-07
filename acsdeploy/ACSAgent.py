@@ -34,7 +34,8 @@ class ACSAgent(APIRequest):
             "name": appName,
             "default_update_method": updateMethod,
             "version": version,
-            "template": templateData
+            "template": templateData,
+            "latest_image": True
         }
         return self.post('/projects/', dumps(data))
 
@@ -44,7 +45,8 @@ class ACSAgent(APIRequest):
             "name": appName,
             "default_update_method": updateMethod,
             "version": version,
-            "template": templateData
+            "template": templateData,
+            "latest_image": True
         }
         return self.post('/projects/%s/update' % (appName), dumps(data))
 
