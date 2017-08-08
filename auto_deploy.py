@@ -16,7 +16,7 @@ def main():
     envName = os.getenv('ENV') or None
 
     if projectName == None or appName == None or envName == None:
-        print('environment variables PROJECT/APP_NAME/ENV required')
+        print('Environment variables PROJECT/APP_NAME/ENV required')
         exit(0)
 
     appName = appName.replace('/','-').upper()
@@ -24,27 +24,26 @@ def main():
     appDir = os.path.dirname((os.path.abspath(sys.argv[0]))) or None
 
     projectDir = sys.argv[1] or None
-    dockerComposeYamlFiles = []
 
     if not os.path.exists(projectDir):
-        print('%s not exists' % projectDir)
+        print('Not exists file [%s]' % projectDir)
         exit(1)
 
     for dirs, root, files in os.walk(projectDir):
         break
 
-    for file in files:
-        if file == 'docker-compose.yml':
-            # if file.find('.yml') != -1 or file.find('.yaml') != -1:
-            dockerComposeYamlFiles.append(os.path.join(projectDir, file))
-
-    for yamlFile in dockerComposeYamlFiles:
+    # test.yml or stage.yml
+    dockerComposeYamlFile = os.path.join(projectDir, '%s.yml' % (envName))
+    
+    if os.path.exists(dockerComposeYamlFile):
         cmd = 'python %s/deploy.py --project %s --app %s --env %s --file %s' % (
-            appDir, projectName, appName, envName, yamlFile)
+            appDir, projectName, appName, envName, dockerComposeYamlFile)
 
         print(cmd)
         if os.system(cmd) != 0:
             exit(1)
+    else:
+        print('Not found file [%s.yml], Skip deployment' % (dockerComposeYamlFile) )
 
 if __name__ == '__main__':
     main()
