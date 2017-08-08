@@ -65,8 +65,14 @@ def main():
         parser.print_help()
         exit(1)
 
-    project = ACSDeploy(options.config,options.project, options.env)
-    print project.deploy(options.app, '', options.publish_method, options.file)
+    project = ACSDeploy(options.config, options.project, options.env)
+    (success, result) = project.deploy(
+        options.app, '', options.publish_method, options.file)
+    
+    if success:
+        print('[DEPLOY RESULT] 部署成功')
+    else:
+        print('[DEPLOY RESULT] 部署失败 %s' % result)
 
 if __name__ == '__main__':
     main()
